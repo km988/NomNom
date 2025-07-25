@@ -1,0 +1,44 @@
+import RPi.GPIO as GPIO
+import time
+import cv2
+import numpy as np
+ 
+# GPIO Mode (BOARD / BCM)
+GPIO.setmode(GPIO.BOARD)
+
+# Load ArUco dictionary and detector parameters
+aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_50)
+aruco_params = cv2.aruco.DetectorParameters_create()
+
+# set GPIO Pins
+GPIO_Ain1 = 11
+GPIO_Ain2 = 13
+GPIO_Apwm = 15
+GPIO_Bin1 = 29
+GPIO_Bin2 = 31
+GPIO_Bpwm = 33
+
+# Set GPIO direction (IN / OUT)
+GPIO.setup(GPIO_Ain1, GPIO.OUT)
+GPIO.setup(GPIO_Ain2, GPIO.OUT)
+GPIO.setup(GPIO_Apwm, GPIO.OUT)
+GPIO.setup(GPIO_Bin1, GPIO.OUT)
+GPIO.setup(GPIO_Bin2, GPIO.OUT)
+GPIO.setup(GPIO_Bpwm, GPIO.OUT)
+
+# Set PWM parameters
+pwm_frequency = 1000
+
+# Create the PWM instances
+pwmA = GPIO.PWM(GPIO_Apwm, pwm_frequency)
+pwmB = GPIO.PWM(GPIO_Bpwm, pwm_frequency)
+
+# Set the duty cycle (between 0 and 100)
+# The duty cycle determines the speed of the wheels
+pwmA.start(100)
+pwmB.start(100)
+
+
+
+
+

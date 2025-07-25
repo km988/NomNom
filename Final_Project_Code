@@ -1,0 +1,115 @@
+import time
+import picamera
+import picamera.array                                   # This needs to be imported explicitly
+import cv2
+import time
+import numpy as np 
+from adafruit_servokit import ServoKit
+
+# Initialize ServoKit for the PWA board.
+kit = ServoKit(channels=16)
+
+# Specify the channels you are using on the PWM driver
+channel_servo1 = 8
+channel_servo2 = 9		# Continuous rotation servo
+
+# To set the servo range to 180 degrees
+# You can adjust the values if needed
+kit.servo[channel_servo1].set_pulse_width_range(400,2300)
+# This is to control a continuous rotation servo
+# It does not work for a DC motor
+kit.servo[channel_servo2].set_pulse_width_range(400,2300)
+    
+# Define the range colors to filter; these numbers represent HSV
+lowerColorThreshold = np.array([0, 104, 20])
+upperColorThreshold = np.array([30, 200, 210])
+
+
+# Initialize the camera and grab a reference to the frame
+camera = picamera.PiCamera()
+camera.resolution = (640, 480)
+camera.framerate = 32
+camera.vflip = False                            # Flip upside down or not
+camera.hflip = True                             # Flip left-right or not
+
+rawframe = picamera.array.PiRGBArray(camera, size=(640, 480))
+
+duration = 0.5
+
+# Main program 
+try:
+        
+    noError = True
+    while noError:
+        
+        # Continuously capture frames from the camera
+        # Note that the format is BGR instead of RGB because we want to use openCV later on and it only supports BGR
+        for frame in camera.capture_continuous(rawframe, format = 'bgr', use_video_port = True):
+                        
+            # Create a numpy array representing the image
+            image = frame.array     
+            image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+
+            # Threshold the HSV image to get only colors in a range
+            # The colors in range are set to white (255), while the colors not in range are set to black (0)
+            ourmask = cv2.inRange(image_hsv, lowerColorThreshold, upperColorThreshold)
+
+            # Count the number of white pixels in the mask
+            numpixels = cv2.countNonZero(ourmask)
+            print("Number of pixels in the color range:", numpixels)
+       
+            # Get the size of the array (the mask is of type 'numpy')
+            # This should be 640 x 480 as defined earlier
+            numx, numy = ourmask.shape
+
+            # Select a part of the image and count the number of white pixels
+            ourmask_center = ourmask[ numx//4 : 3*numx//4 , numy//4 : 3*numy//4 ]
+            numpixels_center = cv2.countNonZero(ourmask_center)
+            print("Number of pixels in the color range in the center part of the image:", numpixels_center)
+           
+            # Bitwise AND of the mask and the original image
+            image_masked = cv2.bitwise_and(image, image, mask = ourmask)
+
+            cv2.imshow("Frame in BGR", image)
+            cv2.imshow("Frame in HSV", image_hsv)
+            cv2.imshow("Mask", ourmask)
+            cv2.imshow("Masked image", image_masked)  
+            cv2.waitKey(1)
+
+            if numpixels > 500:
+                channel = channel_servo1
+                angle = 30
+                kit.servo[channel].angle = angle
+                print ('angle: {0} \t channel: {1}'.format(angle,channel))
+                 
+                channel = channel_servo2
+                angle = 30
+                kit.servo[channel].angle = angle
+                print ('angle: {0} \t channel: {1}'.format(angle,channel))
+        
+                time.sleep(duration)
+
+                channel = channel_servo1
+                angle = 0
+                kit.servo[channel].angle = angle
+                print ('angle: {0} \t channel: {1}'.format(angle,channel))
+
+                channel = channel_servo2
+                angle = 0
+                kit.servo[channel].angle = angle
+                
+                time.sleep(duration)
+
+                time.sleep(0.1)
+
+                # Clear the stream in preparation for the next frame
+                rawframe.truncate(0)            
+            
+        
+            
+# Quit the program when the user presses CTRL + C
+except KeyboardInterrupt:
+        channel = channel_servo1
+        kit.servo[channel].throttle = 0 
+        cv2.destroyAllWindows()
+        camera.close() 

@@ -70,22 +70,22 @@ def listen_for_food():
     recognizer = sr.Recognizer()
     mic = sr.Microphone()
     with mic as source:
-        print("🎤 Say the food you want: 'chips' or 'juice'")
+        print("Say the food you want: 'chips' or 'juice'")
         recognizer.adjust_for_ambient_noise(source)
         audio = recognizer.listen(source)
     try:
         result = recognizer.recognize_google(audio).lower()
-        print(f"🗣️ You said: {result}")
+        print(f"You said: {result}")
         for food in FOOD_TAGS:
             if food in result:
                 return food
     except sr.UnknownValueError:
-        print("❌ Sorry, didn't catch that.")
+        print("Sorry, didn't catch that.")
     return None
 
 # === Vision-Based Drive to Tag ===
 def drive_to_tag(target_id):
-    print(f"🔍 Searching for marker ID {target_id}...")
+    print(f"Searching for marker ID {target_id}...")
     camera = PiCamera()
     camera.resolution = (640, 480)
     camera.framerate = 32
@@ -107,26 +107,26 @@ def drive_to_tag(target_id):
                 center_x = 320  # image width / 2
 
                 if cx < center_x - 50:
-                    print("↪️ Tag left — Pivoting left")
+                    print("Tag left — Pivoting left")
                     pivot_left()
                 elif cx > center_x + 50:
-                    print("↩️ Tag right — Pivoting right")
+                    print("Tag right — Pivoting right")
                     pivot_right()
                 else:
-                    print("⬆️ Aligned — Moving forward")
+                    print("Aligned — Moving forward")
                     move_forward(45)
 
                 # If close enough (adjust value based on testing)
                 if tag_width > 120:
-                    print("📦 Close enough! Stopping.")
+                    print("Close enough! Stopping.")
                     stop()
                     time.sleep(1)
                     break
             else:
-                print("🔁 Tag not found — Scanning...")
+                print("Tag not found — Scanning...")
                 pivot_left()
         else:
-            print("🔍 No tags detected — Turning...")
+            print("No tags detected — Turning...")
             pivot_left()
 
         raw_capture.truncate(0)
@@ -145,10 +145,10 @@ try:
 
         food_id = FOOD_TAGS[food_choice]
 
-        print(f"🚗 Going to get '{food_choice}' (marker ID {food_id})")
+        print(f"Going to get '{food_choice}' (marker ID {food_id})")
         drive_to_tag(food_id)
 
-        print("🤖 Ready to grab! Use robot arm now.")
+        print("Ready to grab! Use robot arm now.")
         time.sleep(5)  # Time to grab manually
 
         print("🔙 Returning to human (ID 2)...")

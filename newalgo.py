@@ -84,17 +84,17 @@ def listen_for_food():
         audio = recognizer.listen(source)
     try:
         result = recognizer.recognize_google(audio).lower()
-        print(f"🗣️ You said: {result}")
+        print(f"You said: {result}")
         for food in FOOD_TAGS:
             if food in result:
                 return food
     except sr.UnknownValueError:
-        print("❌ Sorry, didn't catch that.")
+        print("Sorry, didn't catch that.")
     return None
 
 # === Vision-Based Drive to Tag ===
 def drive_to_tag(target_id):
-    print(f"🔍 Searching for marker ID {target_id}...")
+    print(f"Searching for marker ID {target_id}...")
     camera = PiCamera()
     camera.resolution = (640, 480)
     camera.framerate = 32

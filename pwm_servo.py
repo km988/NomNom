@@ -13,8 +13,15 @@ from adafruit_servokit import ServoKit
 kit = ServoKit(channels=16)
 
 # Specify the channels you are using on the PWM driver
-channel_servo1 = 0
 channel_rotation1 = 2		# Continuous rotation servo
+
+#all continous
+#bottom servo is 0
+#left top servo is 1
+#right top servo is 2
+
+#normal servo small
+# left is 13
 
 # To set the servo range to 180 degrees
 # You can adjust the values if needed

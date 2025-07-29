@@ -147,8 +147,8 @@ def drive_to_tag(target_id):
 
 # === Your gamepad control section integrated ===
 def gamepad_control():
-    print("🎮 Starting manual gamepad control. Press Ctrl+C to exit.")
-    gamepad = InputDevice('/dev/input/event4')  # update device path if needed
+    print("Starting manual gamepad control. Press Ctrl+C to exit.")
+    gamepad = InputDevice('/dev/input/event9')  # update device path if needed
 
     try:
         while True:

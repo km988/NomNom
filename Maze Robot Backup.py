@@ -1,7 +1,6 @@
 # This program illustrates how to capture frames in a video stream and
 # and how to do extract pixels of a specific color
 # It uses openCV
-
 import picamera
 import picamera.array                                   # This needs to be imported explicitly
 import cv2
@@ -11,7 +10,31 @@ import numpy as np
 import RPi.GPIO as GPIO
 import time
 
- 
+import speech_recognition as sr
+
+# Initialize the recognizer
+recognizer = sr.Recognizer()
+
+# Use the default system microphone as the audio source
+with sr.Microphone() as source:
+    print("Adjusting for ambient noise... Please wait.")
+    recognizer.adjust_for_ambient_noise(source, duration=1)  # optional, to improve accuracy
+    print("Listening... Speak now!")
+
+    # Listen to the first phrase and store it in audio
+    audio = recognizer.listen(source)
+
+    try:
+        print("Recognizing...")
+        # Recognize speech using Google Web Speech API
+        text = recognizer.recognize_google(audio)
+        print("You said:", text)
+
+    except sr.UnknownValueError:
+        print("Sorry, I could not understand the audio.")
+    except sr.RequestError as e:
+        print(f"Could not request results from Google Speech Recognition service; {e}")
+
 # GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BOARD)
  
@@ -117,17 +140,10 @@ try:
             #ourmask_P = purplemask[ 0 : numx , 0 : numy ]
             numpixels_P = cv2.countNonZero(purplemask)
             
-            if numpixels_P > 20:
+            if text=="chips":
                 #numpixels = cv2.countNonZero(purplemask)
                 if numpixels_P > 6000:
-                    GPIO.output(GPIO_Ain1, False)
-                    GPIO.output(GPIO_Ain2, True)
-                    GPIO.output(GPIO_Bin1, False)
-                    GPIO.output(GPIO_Bin2, True)
-                    pwmA.ChangeDutyCycle(30)                
-                    pwmB.ChangeDutyCycle(30)
-                    print("purple turn")
-                    time.sleep(0.4)
+                    #####CHANGE TO SERVO MOVEMENT
                 
                 else:
                     M = cv2.moments(purplemask)
@@ -167,18 +183,11 @@ try:
                     image_masked = cv2.bitwise_and(image, image, mask = purplemask)
                     cv2.imshow("Mask", purplemask)
                 
-            elif numpixels_O != 0:
+            elif text=="juice":
                 # Count the number of white pixels in the mask
                 #numpixels = cv2.countNonZero(ourmask)
                 if numpixels_O > 6000:
-                    GPIO.output(GPIO_Ain1, True)
-                    GPIO.output(GPIO_Ain2, False)
-                    GPIO.output(GPIO_Bin1, True)
-                    GPIO.output(GPIO_Bin2, False)
-                    pwmA.ChangeDutyCycle(30)                
-                    pwmB.ChangeDutyCycle(30)
-                    print("orange left")
-                    time.sleep(0.4)
+                    ####CHANGE TO SERVO CODE
                 else:
                     M = cv2.moments(ourmask)
                         

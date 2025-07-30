@@ -7,6 +7,7 @@
 
 # Libraries
 import time
+from evdev import InputDevice, categorize
 from adafruit_servokit import ServoKit
 
 # Initialize ServoKit for the PWA board.
@@ -29,6 +30,8 @@ kit.servo[channel_servo2].set_pulse_width_range(400,2300)
 kit.continuous_servo[channel_rotation1].set_pulse_width_range(1200,1800)
 kit.continuous_servo[channel_rotation2].set_pulse_width_range(1200,1800)
 kit.continuous_servo[channel_rotation3].set_pulse_width_range(1200,1800)
+
+duration = 2  # or any number of seconds
 
 print("Press CTRL+C to end the program.")
 
@@ -155,5 +158,5 @@ try:
             
 # Quit the program when the user presses CTRL + C
 except KeyboardInterrupt:
-        channel = channel_motor1
+        channel = channel_rotation1  # or whichever is appropriate
         kit.continuous_servo[channel].throttle = 0 

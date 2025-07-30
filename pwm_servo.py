@@ -17,7 +17,7 @@ channel_rotation1 = 0		# Continuous rotation servo
 channel_rotation2 = 1
 channel_rotation3 = 2
 #small normal servos
-channel_servo1 = 13 #left
+channel_servo1 = 12 #left
 channel_servo2 = 15 #right
 
 # To set the servo range to 180 degrees

@@ -72,33 +72,31 @@ try:
                     
             noError = True
             while noError:  
-                    if (newbutton and codebutton == 305 and valuebutton == 1):
-                        
+                    if (newbutton and codebutton == 305 and valuebutton == 1):             
                         channel = channel_rotation1
                         speed = 1
                         kit.continuous_servo[channel].throttle = speed
                         print ('speed: {0} \t channel: {1}'.format(speed,channel))
 
                     elif (newbutton and codebutton == 306 and valuebutton == 1):
-                        channel = channel_rotation2
+                        channel1 = channel_rotation2
                         speed = 1
-                        kit.continuous_servo[channel].throttle = speed
-                        print ('speed: {0} \t channel: {1}'.format(speed,channel))
+                        kit.continuous_servo[channel1].throttle = speed
+                        print ('speed: {0} \t channel: {1}'.format(speed,channel1))
 
-                        channel = channel_rotation2
-                        speed = 1
-                        kit.continuous_servo[channel].throttle = speed
-                        print ('speed: {0} \t channel: {1}'.format(speed,channel))
+                        channel2 = channel_rotation3
+                        kit.continuous_servo[channel2].throttle = speed
+                        print ('speed: {0} \t channel: {1}'.format(speed,channel2))
                             
-                    elif (newbutton and codebutton == 305 and valuebutton == 1):
-                        print(" ** Pivot Left **")
-                        pivot_left()
-                    elif (newbutton and codebutton == 305 and valuebutton == 1):
-                        channel = channel_servo1
-                        angle = 0
-                        kit.servo[channel].angle = angle
-                        print ('angle: {0} \t channel: {1}'.format(angle,channel))
-                
+                    elif (newbutton and codebutton == 307 and valuebutton == 1):
+                        channel1 = channel_servo1
+                        channel2 = channel_servo2
+                        angle1 = 90
+                        angle2 = 90
+                        kit.servo[channel1].angle = angle1
+                        kit.servo[channel2].angle = angle2
+                        print ('angle: {0} \t channel: {1}'.format(angle1,channel1))
+                        print ('angle: {0} \t channel: {1}'.format(angle2,channel2))
                     else:
                         stop()
 

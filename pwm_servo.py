@@ -13,27 +13,24 @@ from adafruit_servokit import ServoKit
 kit = ServoKit(channels=16)
 
 # Specify the channels you are using on the PWM driver
-channel_rotation1 = 2		# Continuous rotation servo
-
-#all continous
-#bottom servo is 0
-#left top servo is 1
-#right top servo is 2
-
-#normal servo small
-# left is 13
+channel_rotation1 = 0		# Continuous rotation servo
+channel_rotation2 = 1
+channel_rotation3 = 2
+#small normal servos
+channel_servo1 = 13 #left
+channel_servo2 = 15 #right
 
 # To set the servo range to 180 degrees
 # You can adjust the values if needed
 kit.servo[channel_servo1].set_pulse_width_range(400,2300)
+kit.servo[channel_servo2].set_pulse_width_range(400,2300)
 # This is to control a continuous rotation servo
 # It does not work for a DC motor
 kit.continuous_servo[channel_rotation1].set_pulse_width_range(1200,1800)
-    
+kit.continuous_servo[channel_rotation2].set_pulse_width_range(1200,1800)
+kit.continuous_servo[channel_rotation3].set_pulse_width_range(1200,1800)
 
 print("Press CTRL+C to end the program.")
-
-duration = 2
 
 # Main program 
 try:

@@ -33,7 +33,12 @@ kit.continuous_servo[channel_rotation3].set_pulse_width_range(1200,1800)
 print("Press CTRL+C to end the program.")
 
 print("Starting manual gamepad control. Press Ctrl+C to exit.")
-gamepad = InputDevice('/dev/input/event9')  # update device path if needed
+gamepad = InputDevice('/dev/input/event1')  # update device path if needed
+
+def stop():
+    kit.continuous_servo[channel_rotation1].throttle = 0
+    kit.continuous_servo[channel_rotation2].throttle = 0
+    kit.continuous_servo[channel_rotation3].throttle = 0
 
 try:
         while True:
@@ -55,53 +60,39 @@ try:
             except:
                 continue
         
-            if newstick and codestick == 1 and valuestick < 100:
-                print(" ** Going Forward **")
-                move_forward()
-            elif newstick and codestick == 1 and valuestick > 150:
-                print(" ** Going Backwards **")
-                move_backward()
-            elif newstick and codestick == 0 and valuestick < 100:
-                print(" ** Pivot Left **")
-                pivot_left()
-            elif newstick and codestick == 0 and valuestick > 150:
-                print(" ** Pivot Right **")
-                pivot_right()
+     
+        noError = True
+        while noError:  
+            if (newbutton and codebutton == 305 and valuebutton == 1):     
+                #move horizontally
+                channel = channel_rotation1
+                speed = 1
+                kit.continuous_servo[channel].throttle = speed
+                print ('speed: {0} \t channel: {1}'.format(speed,channel))
+
+            elif (newbutton and codebutton == 306 and valuebutton == 1):
+                #move vertically
+                channel1 = channel_rotation2
+                speed = 1
+                kit.continuous_servo[channel1].throttle = speed
+                print ('speed: {0} \t channel: {1}'.format(speed,channel1))
+
+                channel2 = channel_rotation3
+                kit.continuous_servo[channel2].throttle = speed
+                print ('speed: {0} \t channel: {1}'.format(speed,channel2))
+                    
+            elif (newbutton and codebutton == 307 and valuebutton == 1):
+                #move horizontally
+                channel1 = channel_servo1
+                channel2 = channel_servo2
+                angle1 = 90
+                angle2 = 90
+                kit.servo[channel1].angle = angle1
+                kit.servo[channel2].angle = angle2
+                print ('angle: {0} \t channel: {1}'.format(angle1,channel1))
+                print ('angle: {0} \t channel: {1}'.format(angle2,channel2))
             else:
                 stop()
-                    
-            noError = True
-            while noError:  
-                    if (newbutton and codebutton == 305 and valuebutton == 1):     
-                        #move horizontally
-                        channel = channel_rotation1
-                        speed = 1
-                        kit.continuous_servo[channel].throttle = speed
-                        print ('speed: {0} \t channel: {1}'.format(speed,channel))
-
-                    elif (newbutton and codebutton == 306 and valuebutton == 1):
-                        #move vertically
-                        channel1 = channel_rotation2
-                        speed = 1
-                        kit.continuous_servo[channel1].throttle = speed
-                        print ('speed: {0} \t channel: {1}'.format(speed,channel1))
-
-                        channel2 = channel_rotation3
-                        kit.continuous_servo[channel2].throttle = speed
-                        print ('speed: {0} \t channel: {1}'.format(speed,channel2))
-                            
-                    elif (newbutton and codebutton == 307 and valuebutton == 1):
-                        #move horizontally
-                        channel1 = channel_servo1
-                        channel2 = channel_servo2
-                        angle1 = 90
-                        angle2 = 90
-                        kit.servo[channel1].angle = angle1
-                        kit.servo[channel2].angle = angle2
-                        print ('angle: {0} \t channel: {1}'.format(angle1,channel1))
-                        print ('angle: {0} \t channel: {1}'.format(angle2,channel2))
-                    else:
-                        stop()
 
 except KeyboardInterrupt:
         print("Manual control stopped by user.")

@@ -32,9 +32,81 @@ kit.continuous_servo[channel_rotation3].set_pulse_width_range(1200,1800)
 
 print("Press CTRL+C to end the program.")
 
+print("Starting manual gamepad control. Press Ctrl+C to exit.")
+gamepad = InputDevice('/dev/input/event9')  # update device path if needed
+
+try:
+        while True:
+            newbutton = False
+            newstick = False
+            try:
+                event = gamepad.read_one()
+                if event is None:
+                    continue
+                eventinfo = categorize(event)
+                if event.type == 1:  # Button event
+                    newbutton = True
+                    codebutton = eventinfo.scancode
+                    valuebutton = eventinfo.keystate
+                elif event.type == 3:  # Analog stick event
+                    newstick = True
+                    codestick = eventinfo.event.code
+                    valuestick = eventinfo.event.value
+            except:
+                continue
+        
+            if newstick and codestick == 1 and valuestick < 100:
+                print(" ** Going Forward **")
+                move_forward()
+            elif newstick and codestick == 1 and valuestick > 150:
+                print(" ** Going Backwards **")
+                move_backward()
+            elif newstick and codestick == 0 and valuestick < 100:
+                print(" ** Pivot Left **")
+                pivot_left()
+            elif newstick and codestick == 0 and valuestick > 150:
+                print(" ** Pivot Right **")
+                pivot_right()
+            else:
+                stop()
+                    
+            noError = True
+            while noError:  
+                    if (newbutton and codebutton == 305 and valuebutton == 1):
+                        
+                        channel = channel_rotation1
+                        speed = 1
+                        kit.continuous_servo[channel].throttle = speed
+                        print ('speed: {0} \t channel: {1}'.format(speed,channel))
+
+                    elif (newbutton and codebutton == 306 and valuebutton == 1):
+                        channel = channel_rotation2
+                        speed = 1
+                        kit.continuous_servo[channel].throttle = speed
+                        print ('speed: {0} \t channel: {1}'.format(speed,channel))
+
+                        channel = channel_rotation2
+                        speed = 1
+                        kit.continuous_servo[channel].throttle = speed
+                        print ('speed: {0} \t channel: {1}'.format(speed,channel))
+                            
+                    elif (newbutton and codebutton == 305 and valuebutton == 1):
+                        print(" ** Pivot Left **")
+                        pivot_left()
+                    elif (newbutton and codebutton == 305 and valuebutton == 1):
+                        channel = channel_servo1
+                        angle = 0
+                        kit.servo[channel].angle = angle
+                        print ('angle: {0} \t channel: {1}'.format(angle,channel))
+                
+                    else:
+                        stop()
+
+except KeyboardInterrupt:
+        print("Manual control stopped by user.")
+        stop()
 # Main program 
 try:
-        
     noError = True
     while noError:
 

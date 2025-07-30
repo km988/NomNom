@@ -72,13 +72,15 @@ try:
                     
             noError = True
             while noError:  
-                    if (newbutton and codebutton == 305 and valuebutton == 1):             
+                    if (newbutton and codebutton == 305 and valuebutton == 1):     
+                        #move horizontally
                         channel = channel_rotation1
                         speed = 1
                         kit.continuous_servo[channel].throttle = speed
                         print ('speed: {0} \t channel: {1}'.format(speed,channel))
 
                     elif (newbutton and codebutton == 306 and valuebutton == 1):
+                        #move vertically
                         channel1 = channel_rotation2
                         speed = 1
                         kit.continuous_servo[channel1].throttle = speed
@@ -89,6 +91,7 @@ try:
                         print ('speed: {0} \t channel: {1}'.format(speed,channel2))
                             
                     elif (newbutton and codebutton == 307 and valuebutton == 1):
+                        #move horizontally
                         channel1 = channel_servo1
                         channel2 = channel_servo2
                         angle1 = 90

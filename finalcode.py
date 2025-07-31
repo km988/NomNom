@@ -151,7 +151,10 @@ try:
   noError = True
   while (noError):
     time.sleep(0.1)  # Allow camera to warm up
-
+    channel = channel_rotation1
+    angle = 45
+    kit.servo[channel].angle = angle
+      
     for frame in camera.capture_continuous(rawframe, format='bgr', use_video_port=True):
         image = frame.array
         
@@ -210,69 +213,100 @@ try:
             stop()
             camera.close()
             
-            channel = channel_rotation2
-            speed = 0.8
-            kit.continuous_servo[channel].throttle = speed
-            time.sleep(1)
-            print ('speed: {0} \t channel: {1}'.format(speed,channel))  
-            
-            channel = channel_rotation3
-            speed = -0.8
-            kit.continuous_servo[channel].throttle = speed
-            time.sleep(1)
-            
-            move_forward()
-            time.sleep(5)
-            
             if text == "crackers":
-              #add code to move bttom srevo left
-              time.sleep(2)
-            
-            if text == "Popcorn":
-                #add code to move bttom srevo left             
+                print("Going to get crackers")
+                channel = channel_rotation1
+                angle = 90
+                kit.servo[channel].angle = angle
                 time.sleep(2)
             
-            channel = channel_servo1
-            angle = 0
-            kit.servo[channel].angle = angle
-            print ('angle: {0} \t channel: {1}'.format(angle,channel))  
+                channel = channel_servo1
+                angle = 0
+                kit.servo[channel].angle = angle
+                print('angle: {0} \t channel: {1}'.format(angle, channel))  
             
-            channel = channel_servo2
-            angle = 90
-            kit.servo[channel].angle = angle
-            print ('angle: {0} \t channel: {1}'.format(angle,channel))  
-            time.sleep(1)
+                channel = channel_servo2
+                angle = 90
+                kit.servo[channel].angle = angle
+                print('angle: {0} \t channel: {1}'.format(angle, channel))  
+                time.sleep(1)
             
-            move_backwards()
-            time.sleep(5)
+                backwards()
+                time.sleep(1)
             
-            channel = channel_rotation2
-            speed = 1
-            kit.continuous_servo[channel].throttle = speed
-            time.sleep(1)
-            print ('speed: {0} \t channel: {1}'.format(speed,channel))  
+                channel = channel_rotation1
+                angle = 135
+                kit.servo[channel].angle = angle
+                time.sleep(2)
             
-            channel = channel_rotation3
-            speed = -1
-            kit.continuous_servo[channel].throttle = speed
-            time.sleep(1)
+                channel = channel_servo1
+                angle = 90
+                kit.servo[channel].angle = angle
+                print('angle: {0} \t channel: {1}'.format(angle, channel))  
             
-            channel = channel_servo1
-            angle = 90
-            kit.servo[channel].angle = angle
-            print ('angle: {0} \t channel: {1}'.format(angle,channel))  
+                channel = channel_servo2
+                angle = 0
+                kit.servo[channel].angle = angle
+                print('angle: {0} \t channel: {1}'.format(angle, channel))  
+                time.sleep(1)
             
-            channel = channel_servo2
-            angle = 0
-            kit.servo[channel].angle = angle
-            print ('angle: {0} \t channel: {1}'.format(angle,channel))  
-            time.sleep(1)
+                channel = channel_rotation1
+                angle = 45
+                kit.servo[channel].angle = angle
+                time.sleep(2)
             
-            backwards()
-            time.sleep(5)
-            stop()
-            print("I got your snack!")
+                backwards()
+                time.sleep(3)
+                print("I got your snack!")
+                stop()
             
+            elif text == "Popcorn":
+                print("Going to get popcorn")
+                channel = channel_rotation1
+                angle = 0
+                kit.servo[channel].angle = angle
+                time.sleep(2)
+            
+                channel = channel_servo1
+                angle = 0
+                kit.servo[channel].angle = angle
+                print('angle: {0} \t channel: {1}'.format(angle, channel))  
+            
+                channel = channel_servo2
+                angle = 90
+                kit.servo[channel].angle = angle
+                print('angle: {0} \t channel: {1}'.format(angle, channel))  
+                time.sleep(1)
+            
+                backwards()
+                time.sleep(1)
+            
+                channel = channel_rotation1
+                angle = 135
+                kit.servo[channel].angle = angle
+                time.sleep(2)
+            
+                channel = channel_servo1
+                angle = 90
+                kit.servo[channel].angle = angle
+                print('angle: {0} \t channel: {1}'.format(angle, channel))  
+            
+                channel = channel_servo2
+                angle = 0
+                kit.servo[channel].angle = angle
+                print('angle: {0} \t channel: {1}'.format(angle, channel))  
+                time.sleep(1)
+            
+                channel = channel_rotation1
+                angle = 45
+                kit.servo[channel].angle = angle
+                time.sleep(2)
+            
+                backwards()
+                time.sleep(3)
+                print("I got your snack!")
+                stop()
+
 
         # Prepare for next frame
         rawframe.truncate(0)

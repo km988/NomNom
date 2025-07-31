@@ -7,7 +7,6 @@ import numpy as np
 import RPi.GPIO as GPIO
 from adafruit_servokit import ServoKit
 from evdev import InputDevice, categorize, ecodes
-import RPi.GPIO as GPIO
 
 import speech_recognition as sr
 
@@ -22,7 +21,8 @@ with sr.Microphone() as source:
 
     # Listen to the first phrase and store it in audio
     audio = recognizer.listen(source)
-
+    
+    text = ""
     try:
         print("Recognizing...")
         # Recognize speech using Google Web Speech API
@@ -196,12 +196,12 @@ try:
 
         if white_left > WHITE_THRESHOLD and white_left > white_center and white_left > white_right:
             print("Go left")
-            x = ((numPixelsLeft - numPixelsRight)/numPixelsLeft)
+            x = ((white_left - white_right) / white_left)
             pivot_left(x)
 
         elif white_right > WHITE_THRESHOLD and white_right > white_center and white_right > white_left:
             print("Go right")
-            x = ((numPixelsRight - numPixelsLeft)/numPixelsRight)
+            x = ((white_right - white_left) / white_right)
             pivot_right(x)
 
         elif white_center > WHITE_THRESHOLD:

@@ -205,9 +205,71 @@ try:
             print("Go straight")
             move_forward()
 
-        elif (white_left <40 and white_right <40):
+        elif (white_center < 20):
             print("Stopping")
             stop()
+            
+            channel = channel_rotation2
+            speed = 0.8
+            kit.continuous_servo[channel].throttle = speed
+            time.sleep(1)
+            print ('speed: {0} \t channel: {1}'.format(speed,channel))  
+            
+            channel = channel_rotation3
+            speed = -0.8
+            kit.continuous_servo[channel].throttle = speed
+            time.sleep(1)
+            
+            move_forward()
+            time.sleep(5)
+            
+            if text == "crackers":
+              #add code to move bttom srevo left
+              time.sleep(2)
+            
+            if text == "Popcorn":
+                #add code to move bttom srevo left             
+                time.sleep(2)
+            
+            channel = channel_servo1
+            angle = 0
+            kit.servo[channel].angle = angle
+            print ('angle: {0} \t channel: {1}'.format(angle,channel))  
+            
+            channel = channel_servo2
+            angle = 90
+            kit.servo[channel].angle = angle
+            print ('angle: {0} \t channel: {1}'.format(angle,channel))  
+            time.sleep(1)
+            
+            move_backwards()
+            time.sleep(5)
+            
+            channel = channel_rotation2
+            speed = 1
+            kit.continuous_servo[channel].throttle = speed
+            time.sleep(1)
+            print ('speed: {0} \t channel: {1}'.format(speed,channel))  
+            
+            channel = channel_rotation3
+            speed = -1
+            kit.continuous_servo[channel].throttle = speed
+            time.sleep(1)
+            
+            channel = channel_servo1
+            angle = 90
+            kit.servo[channel].angle = angle
+            print ('angle: {0} \t channel: {1}'.format(angle,channel))  
+            
+            channel = channel_servo2
+            angle = 0
+            kit.servo[channel].angle = angle
+            print ('angle: {0} \t channel: {1}'.format(angle,channel))  
+            time.sleep(1)
+
+            camera.close()
+
+            
 
         # Prepare for next frame
         rawframe.truncate(0)

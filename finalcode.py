@@ -54,15 +54,16 @@ kit.continuous_servo[channel_rotation1].set_pulse_width_range(500, 2500)
 kit.continuous_servo[channel_rotation2].set_pulse_width_range(500, 2500)
 kit.continuous_servo[channel_rotation3].set_pulse_width_range(500, 2500)
 
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
  
 # set GPIO Pins
-GPIO_Ain1 = 11
-GPIO_Ain2 = 13
-GPIO_Apwm = 15
-GPIO_Bin1 = 29
-GPIO_Bin2 = 31
-GPIO_Bpwm = 33
+# set GPIO Pins
+GPIO_Ain1 = 17
+GPIO_Ain2 = 27
+GPIO_Apwm = 22
+GPIO_Bin1 = 5
+GPIO_Bin2 = 6
+GPIO_Bpwm = 13
 
 # Set GPIO direction (IN / OUT)
 GPIO.setup(GPIO_Ain1, GPIO.OUT)

@@ -208,6 +208,7 @@ try:
         elif (white_center < 20):
             print("Stopping")
             stop()
+            camera.close()
             
             channel = channel_rotation2
             speed = 0.8
@@ -266,9 +267,11 @@ try:
             kit.servo[channel].angle = angle
             print ('angle: {0} \t channel: {1}'.format(angle,channel))  
             time.sleep(1)
-
-            camera.close()
-
+            
+            backwards()
+            time.sleep(5)
+            stop()
+            print("I got your snack!")
             
 
         # Prepare for next frame
